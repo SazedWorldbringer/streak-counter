@@ -90,5 +90,18 @@ describe("streakCounter", () => {
 
 			expect(streak.currentCount).toBe(1);
 		})
+
+		it("should save the incremented streak to localStorage", () => {
+			const key = "streak";
+			const date = new Date("12/13/2022");
+
+			// call streakCounter once so it updates the streak
+			streakCounter(mockLocalStorage, date);
+
+			const streakAsString = mockLocalStorage.getItem(key);
+			const streak = JSON.parse(streakAsString || "");
+
+			expect(streak.currentCount).toBe(2);
+		})
 	})
 })
