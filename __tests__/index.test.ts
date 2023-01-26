@@ -1,10 +1,11 @@
 import { JSDOM } from 'jsdom'
 import { streakCounter } from "../src/index";
+import { formattedDate } from "../src/utils";
 
 describe("streakCounter", () => {
 	let mockLocalStorage: Storage;
 	beforeEach(() => {
-		const mockJSDom = new JSDOM("", {url: "https://localhost"});
+		const mockJSDom = new JSDOM("", { url: "https://localhost" });
 
 		mockLocalStorage = mockJSDom.window.localStorage;
 	})
@@ -20,10 +21,6 @@ describe("streakCounter", () => {
 	it("should return a streak starting at 1 and keep track of lastLoginDate", () => {
 		const date = new Date();
 		const streak = streakCounter(mockLocalStorage, date);
-
-		function formattedDate(date: Date):string {
-			return date.toLocaleDateString("en-US");
-		}
 
 		const dateFormatted = formattedDate(date);
 
