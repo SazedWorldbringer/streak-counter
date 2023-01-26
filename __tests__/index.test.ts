@@ -45,6 +45,7 @@ describe("streakCounter", () => {
 
 	describe("with a pre-populated streak", () => {
 		let mockLocalStorage: Storage;
+
 		beforeEach(() => {
 			const mockJSDom = new JSDOM("", { url: "https://localhost" });
 
@@ -61,15 +62,25 @@ describe("streakCounter", () => {
 
 			mockLocalStorage.setItem("streak", JSON.stringify(streak));
 		})
+
 		afterEach(() => {
 			mockLocalStorage.clear()
 		})
+
 		it("should return the streak from localStorage", () => {
 			const date = new Date();
 			const streak = streakCounter(mockLocalStorage, date)
 
 			// should match testDate
 			expect(streak.startDate).toBe("12/12/2022");
+		})
+
+		it("should increment the streak", () => {
+			// day after the streak started
+			const date = new Date("12/13/2022");
+			const streak = streakCounter(mockLocalStorage, date);
+
+			expect(streak.currentCount).toBe(2);
 		})
 	})
 })
