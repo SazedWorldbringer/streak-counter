@@ -1,3 +1,5 @@
+import { formattedDate } from "../src/utils";
+
 interface Streak {
 	currentCount: number
 	startDate: string
@@ -6,8 +8,8 @@ interface Streak {
 
 export function streakCounter(storage: Storage, date: Date): Streak {
 	return {
-		currentCount: 0,
-		startDate: '01/25/2023',
-		lastLoginDate: '01/25/2023',
+		currentCount: 1,
+		startDate: formattedDate(date),
+		lastLoginDate: formattedDate(date),
 	}
 }
