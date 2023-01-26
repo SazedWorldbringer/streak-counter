@@ -4,11 +4,17 @@ import { formattedDate } from "../src/utils";
 
 describe("streakCounter", () => {
 	let mockLocalStorage: Storage;
+
 	beforeEach(() => {
 		const mockJSDom = new JSDOM("", { url: "https://localhost" });
 
 		mockLocalStorage = mockJSDom.window.localStorage;
 	})
+
+	afterEach(() => {
+		mockLocalStorage.clear();
+	})
+
 	it("should return a streak object with currentCount, startDate and lastLoginDate", () => {
 		const date = new Date();
 		const streak = streakCounter(mockLocalStorage, date);
