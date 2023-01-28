@@ -68,7 +68,7 @@ describe("streakCounter", () => {
 		})
 
 		it("should return the streak from localStorage", () => {
-			const date = new Date();
+			const date = new Date("12/12/2022");
 			const streak = streakCounter(mockLocalStorage, date)
 
 			// should match testDate
@@ -114,6 +114,23 @@ describe("streakCounter", () => {
 			const dateUpdated = new Date("12/15/2022");
 			const streakUpdated = streakCounter(mockLocalStorage, dateUpdated)
 			expect(streakUpdated.currentCount).toBe(1);
+		})
+
+		it("should save the reset streak to localStorage", () => {
+			const key = "streak";
+			const date = new Date("12/13/2022");
+			// Call it once so it updates the streak
+			streakCounter(mockLocalStorage, date);
+
+			// skip a day a to break the streak
+			const dateUpdated = new Date("12/15/2022");
+			const streakUpdated = streakCounter(mockLocalStorage, dateUpdated)
+
+			const streakAsString = mockLocalStorage.getItem(key);
+
+			const streak = JSON.parse(streakAsString || "");
+
+			expect(streak.currentCount).toBe(1);
 		})
 	})
 })
