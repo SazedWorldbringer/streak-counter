@@ -16,16 +16,16 @@ export function differenceInDays(dateLeft: Date, dateRight: Date): number {
 function shouldIncrementOrResetStreakCount(
 	currentDate: Date,
 	lastLoginDate: string,
-): 'increment' | undefined {
-	const difference = differenceInDays(currentDate, new Date(lastLoginDate));
+): "increment" | "reset" {
+	const difference = currentDate.getDate() - parseInt(lastLoginDate.split("/")[1]);
 
 	// user logged in a day after the currentDate
 	if (difference === 1) {
-		return 'increment'
+		return "increment"
 	}
 
 	// user logged in after a day, ultimately breaking the streak
-	return undefined;
+	return "reset";
 }
 
 // used for storing in localStorage
@@ -37,10 +37,11 @@ export function streakCounter(storage: Storage, date: Date): Streak {
 		try {
 			const streak = JSON.parse(streakInLocalStorage);
 			const state = shouldIncrementOrResetStreakCount(date, streak.lastLoginDate);
-			const SHOULD_INCREMENT = state;
+			const SHOULD_INCREMENT = state === "increment";
+			const SHOULD_RESET = state === "reset";
 
 			if (SHOULD_INCREMENT) {
-				const updatedStreak = {
+				const updatedStreak: Streak = {
 					...streak,
 					currentCount: streak.currentCount + 1,
 					lastLoginDate: formattedDate(date),
@@ -51,6 +52,20 @@ export function streakCounter(storage: Storage, date: Date): Streak {
 
 				return updatedStreak;
 			}
+
+			if (SHOULD_RESET) {
+				const updatedStreak: Streak = {
+					currentCount: 1,
+					startDate: formattedDate(date),
+					lastLoginDate: formattedDate(date),
+				};
+
+				// store in localStorage
+				storage.setItem(KEY, JSON.stringify(updatedStreak));
+
+				return updatedStreak;
+			}
+
 			return streak;
 		} catch (error) {
 			console.error("Failed to parse streak from localStorage");
