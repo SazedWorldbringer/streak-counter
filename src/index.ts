@@ -1,4 +1,4 @@
-import { Streak, buildStreak, formattedDate } from "../src/utils";
+import { Streak, buildStreak, formattedDate, KEY, updateStreak } from "../src/utils";
 
 export function differenceInDays(dateLeft: Date, dateRight: Date): number {
 	const diffTime = Math.abs(dateLeft.getTime() - dateRight.getTime());
@@ -12,7 +12,7 @@ function shouldIncrementOrResetStreakCount(
 	lastLoginDate: string,
 ): "increment" | "reset" | "none" {
 	const difference = currentDate.getDate() - parseInt(lastLoginDate.split("/")[1]);
-	
+
 	// same-day login, do nothing
 	if (difference === 0) {
 		return "none"
@@ -26,9 +26,6 @@ function shouldIncrementOrResetStreakCount(
 	// user logged in after a day, ultimately breaking the streak
 	return "reset";
 }
-
-// used for storing in localStorage
-const KEY = "streak";
 
 export function streakCounter(storage: Storage, date: Date): Streak {
 	const streakInLocalStorage = storage.getItem(KEY);
@@ -46,8 +43,7 @@ export function streakCounter(storage: Storage, date: Date): Streak {
 					lastLoginDate: formattedDate(date),
 				});
 
-				// store in localStorage
-				storage.setItem(KEY, JSON.stringify(updatedStreak));
+				updateStreak(storage, updatedStreak)
 
 				return updatedStreak;
 			}
@@ -55,8 +51,7 @@ export function streakCounter(storage: Storage, date: Date): Streak {
 			if (SHOULD_RESET) {
 				const updatedStreak = buildStreak(date);
 
-				// store in localStorage
-				storage.setItem(KEY, JSON.stringify(updatedStreak));
+				updateStreak(storage, updatedStreak)
 
 				return updatedStreak;
 			}
