@@ -1,10 +1,5 @@
 import { formattedDate } from "../src/utils";
-
-interface Streak {
-	currentCount: number
-	startDate: string
-	lastLoginDate: string
-}
+import { Streak } from '../src/utils'
 
 export function differenceInDays(dateLeft: Date, dateRight: Date): number {
 	const diffTime = Math.abs(dateLeft.getTime() - dateRight.getTime());
