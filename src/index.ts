@@ -16,8 +16,13 @@ export function differenceInDays(dateLeft: Date, dateRight: Date): number {
 function shouldIncrementOrResetStreakCount(
 	currentDate: Date,
 	lastLoginDate: string,
-): "increment" | "reset" {
+): "increment" | "reset" | "none" {
 	const difference = currentDate.getDate() - parseInt(lastLoginDate.split("/")[1]);
+	
+	// same-day login, do nothing
+	if (difference === 0) {
+		return "none"
+	}
 
 	// user logged in a day after the currentDate
 	if (difference === 1) {
