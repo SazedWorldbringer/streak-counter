@@ -13,5 +13,5 @@ jobs:
       - run: npm run build
       - uses: JS-DevTools/npm-publish@v1
         with: 
-        token: $
-        access: "public"
+          token: $
+          access: "public"
