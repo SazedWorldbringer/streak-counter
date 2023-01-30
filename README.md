@@ -28,3 +28,5 @@ streak returns an object:
 	startDate: "01/24/2023",
 }
 ```
+
+[![Edit streak-counter (ts-course) (forked)](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/streak-counter-ts-course-forked-q0eh2b?fontsize=14&hidenavigation=1&theme=dark)
